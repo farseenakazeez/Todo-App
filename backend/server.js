@@ -1,6 +1,7 @@
 import express from 'express'
 import connectDb from './config/db.js'
 import dotenv from 'dotenv'
+import Todos from './models/todomodel.js'
 const app = express()
 dotenv.config()
 let port = process.env.PORT;
@@ -18,9 +19,14 @@ app.get('/',(req,res)=>{
 })
 
 
-app.post('/create',(req,res)=>{
-    console.log(req.body)
-    res.send('great')
+app.post('/create',async(req,res)=>{
+    //console.log(req.body)
+    let{title,description} = req.body
+    let todo = await Todos.create({
+        title,
+        description
+    }) 
+    res.send(todo)
     
-})
+});
 
