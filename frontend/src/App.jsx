@@ -6,7 +6,8 @@ let userName = 'sam'
 let age = 24
   return  (
     <>
-      <Sample userName = {userName} age = {24}/>
+      <Sample userName = {userName} age = {24} isLogin={true}/>
+      <Sample userName = {'bale'} age={30} isLogin={false}/>
   
     </>
   )
