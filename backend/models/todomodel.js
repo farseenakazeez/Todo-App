@@ -14,4 +14,4 @@ const todoschema = mongoose.Schema({
     }
 })
 const Todos = mongoose.model('todos',todoschema)
-export default Todos
+export default Todos;
