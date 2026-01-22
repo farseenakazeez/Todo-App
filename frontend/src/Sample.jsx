@@ -1,20 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Sample() {
-  let [counter,setCounter] = useState(0)
-  let [name,setName] = useState("");
+  const [show , setShow] = useState(true)
+  useEffect(()=>{
+    console.log("Component re rendered");
+  },[example]);
+  const [example ,setExample ] = useState(true)
 
     
   return (
     <>
-    <button onClick={()=>setCounter(counter - 1)}>-</button>
-    <h1>{counter}</h1>
-    <button onClick={()=>setCounter(counter + 1)}>+</button>
-    
-    <input type="text" placeholder = "Enter your name" onChange={(e)=>setName(e.target.value)}
-    value = {name} />
-    <p>{name}</p>
-    
+    { show && <h1>Hello</h1>}
+    <button onClick = {()=>setShow(!show)}>{show ? "Hide": "show"}</button>
+    <button onClick={()=>setExample(!example)}>CLICK ME</button>
     
     </>
    
