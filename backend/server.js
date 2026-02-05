@@ -15,6 +15,6 @@ app.use(cors())
 //http://localhost:3000/
 
 app.listen(3000,()=>console.log('server started'))
-app.use('/api/todos',todoRoute)
+app.use('/api/todo',todoRoute)
 
 
