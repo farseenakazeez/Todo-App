@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Backendinstance from '../axios'
+import {toast} from 'react-toastify'
 
 function HomePage() {
     const Navigate = useNavigate()
@@ -15,6 +16,7 @@ function HomePage() {
         }
         catch (error) {
             console.log(error?.message || error?.data?.message);
+            toast.error(error?.message || error?.data?.message)
 
         }
     };
@@ -23,11 +25,13 @@ function HomePage() {
         e.preventDefault()
         try {
             let res = await Backendinstance.post("/create", { title, description });
+            toast.success("Todo Added")
             getTodos()
             settitle("")
             setDescription("")
         } catch (error) {
             console.log(error?.message || error?.data?.message);
+            toast.error(error?.message || error?.data?.message)
 
         }
     };
