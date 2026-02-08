@@ -1,32 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Backendinstance from '../axios'
+
 import {toast} from 'react-toastify'
+import { useAddTodoMutation,useDeleteTodoMutation,useGetTodosQuery } from '../slices/todoApiSlice';
+import { createDraftSafeSelectorCreator } from '@reduxjs/toolkit';
 
 function HomePage() {
     const Navigate = useNavigate()
-    const [todos, setTodos] = useState([]);
+
     let [title, settitle] = useState("");
     let [description, setDescription] = useState("");
 
-    const getTodos = async () => {
-        try {
-            let res = await Backendinstance.get()
-            setTodos(res.data)
-        }
-        catch (error) {
-            console.log(error?.message || error?.data?.message);
-            toast.error(error?.message || error?.data?.message)
+    let {data : todos ,refetch} = useGetTodosQuery();
 
-        }
-    };
+    let[addTodo] = useAddTodoMutation();
+    let[deleteTodo] = useDeleteTodoMutation();
 
+
+    
     const addTodoHandler = async (e) => {
         e.preventDefault()
         try {
-            let res = await Backendinstance.post("/create", { title, description });
+            let res = await addTodo({title,description}).unwrap();
+            refetch();
+         
             toast.success("Todo Added")
-            getTodos()
+          
             settitle("")
             setDescription("")
         } catch (error) {
@@ -35,9 +34,19 @@ function HomePage() {
 
         }
     };
-    useEffect(() => {
-        getTodos()
-    }, []);
+    const deleteTodoHandler = async (id)=>{
+        try{
+            let res=await deleteTodo(id).unwrap();
+            refetch();
+            toast.success("Account deleted")
+        }
+         catch (error) {
+            console.log(error?.message || error?.data?.message);
+            toast.error(error?.message || error?.data?.message)
+
+        }
+    }
+   
     //console.log(todos)
 
     return (
@@ -47,6 +56,7 @@ function HomePage() {
                 <div key={index}>
                     <h1>{todo.title}</h1>
                     <p>{todo.description}</p>
+                    <button onClick={()=>deleteTodoHandler(todo._id)}>Delete</button>
                 </div>
 
 
