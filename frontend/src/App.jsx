@@ -2,6 +2,7 @@
 import { Route, Routes } from 'react-router-dom'
 import HomePage from './pages/HomePage.jsx'
 import { ToastContainer } from 'react-toastify'
+import EditPage from './pages/EditPage.jsx'
 
 
 
@@ -12,6 +13,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<HomePage />} />
+        <Route path='edit/:id' element={<EditPage/>}/>
 
 
       </Routes>
