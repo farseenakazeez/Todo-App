@@ -6,9 +6,12 @@ import {
   useGetTodosQuery,
 } from "../slices/todoApiSlice";
 import { toast } from "react-toastify";
-import './EditTodo.css'
+import "./EditTodo.css";
+import { useSelector } from "react-redux";
 
 function EditPage() {
+  const { userData } = useSelector((state) => state.auth);
+
   let { id } = useParams();
   const navigate = useNavigate();
 
@@ -16,8 +19,11 @@ function EditPage() {
   const [description, setDescription] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
 
-  const { data: todo, refetch } = useGetTodoByIdQuery({ id: id });
-  const { data, refetch: getTodos } = useGetTodosQuery();
+   const { data: todo, refetch } = useGetTodoByIdQuery({ id: id });
+  const { data, refetch: getTodos } = useGetTodosQuery({
+    userId: userData?._id,
+  });
+  
 
   const [updateTodo] = useUpdateTodoMutation();
 
@@ -30,6 +36,7 @@ function EditPage() {
         isCompleted,
         id,
       }).unwrap();
+      
 
       refetch();
       getTodos();
@@ -51,55 +58,56 @@ function EditPage() {
 
   return (
     <>
- <div className="edit-container">
-      <div className="edit-card">
-        <h3>Edit Todo</h3>
+      <div className="edit-container">
+        <div className="edit-card">
+          <h3>Edit Todo</h3>
 
-        <form onSubmit={editTodoHandler}>
-          <input
-            type="text"
-            placeholder="Enter title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+          <form onSubmit={editTodoHandler}>
+            <input
+              type="text"
+              placeholder="Enter title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
 
-          <textarea
-            placeholder="Enter description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows="4"
-          />
+            <textarea
+              placeholder="Enter description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows="4"
+            />
 
-          <div className="status-row">
-            <label>Status</label>
-            <select
-              value={isCompleted.toString()}
-              onChange={(e) => setIsCompleted(e.target.value === "true")}
-            >
-              <option value="false">Pending</option>
-              <option value="true">Completed</option>
-            </select>
-          </div>
+            <div className="status-row">
+              <label>Status</label>
+              <select
+                value={isCompleted.toString()}
+                onChange={(e) => setIsCompleted(e.target.value === "true")}
+              >
+                <option value="false">Pending</option>
+                <option value="true">Completed</option>
+              </select>
+            </div>
 
-          <div className="edit-actions">
-            <button type="submit" className="save-btn">
-              Save Changes
-            </button>
+            <div className="edit-actions">
+              <button type="submit" className="save-btn">
+                Save Changes
+              </button>
 
-            <button
-              type="button"
-              className="cancel-btn"
-              onClick={() => navigate("/")}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => navigate("/")}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
     </>
   );
 }
 
 export default EditPage;
+
