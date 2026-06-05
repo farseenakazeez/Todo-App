@@ -11,7 +11,11 @@ const todoschema = mongoose.Schema({
     isCompleted : {
         type : Boolean,
         default : false
-    }
+    },
+     userId: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
 })
 const Todos = mongoose.model('todos',todoschema)
 export default Todos;

@@ -1,11 +1,22 @@
 import express from 'express'
-import  { getTodos, deleteTodos,createTodos, getTodoById, updateTodo } from '../controllers/todocontroller.js'
+import {
+    getTodos,
+    deleteTodos,
+    createTodos,
+    getTodoById,
+    updateTodo
+} from '../controllers/todocontroller.js'
+import { protect } from '../middlewares/authMiddlewares.js'
+
+
+
 const todoRoute = express.Router()
-todoRoute.get('/',getTodos)
-todoRoute.post('/create',createTodos)
-todoRoute.delete('/:id',deleteTodos)
-todoRoute.get('/getTodoById',getTodoById)
-todoRoute.patch('/updateTodo',updateTodo)
+
+todoRoute.get('/', protect, getTodos)
+todoRoute.post('/create', protect, createTodos)
+todoRoute.delete('/:id', protect, deleteTodos)
+todoRoute.get('/getTodoById', protect, getTodoById)
+todoRoute.patch('/updateTodo', protect, updateTodo)
 export default todoRoute;
 
 // http://localhost:3000/api/todo
