@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "../middlewares/asyncHandler.js";
 
 const registerUser = asyncHandler(async (req, res) => {
+  console.log("Register user hit");
   let { name, email, password } = req.body;
 
   const salt = await bcrypt.genSalt(10);
@@ -29,6 +30,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
+  console.log("Login user hit");
   let { email, password } = req.body;
 
   const user = await Users.findOne({ email: email });
